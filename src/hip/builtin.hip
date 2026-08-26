@@ -885,17 +885,6 @@ MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar ) {
 
 }
 
-// ExchCXX's HIP backend does not implement Fxc/vxc_fxc device evaluation
-// (unlike CUDA and SYCL). Rather than leaving BuiltinKernelImpl<T,void>'s
-// vtable (eval_fxc_device/eval_vxc_fxc_device, declared in kernel_type.hpp)
-// unresolved at link time for every functional, provide a generic stub that
-// throws at runtime; ordinary exc/vxc evaluation is unaffected. The
-// underlying math (kernel_traits<T>::eval_fxc_*) already exists and is
-// shared with the host/CUDA/SYCL backends, so a real port -- mirroring
-// cuda/builtin.cu's device_eval_*_helper_* kernels -- remains possible as a
-// follow-up; that port must account for HIP-specific numerics differences
-// already present in this file (e.g. the fmax(rho,0.) clamps above) rather
-// than being a verbatim copy.
 template <typename KernelType>
 LDA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar ) {
   throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
