@@ -53,6 +53,7 @@
 #include <exchcxx/impl/builtin/util.hpp>
 #include <exchcxx/impl/builtin/kernels.hpp>
 #include <exchcxx/util/div_ceil.hpp>
+#include <stdexcept>
 
 namespace ExchCXX {
 namespace detail {
@@ -884,6 +885,116 @@ MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar ) {
 
 }
 
+// ExchCXX's HIP backend does not implement Fxc/vxc_fxc device evaluation
+// (unlike CUDA and SYCL). Rather than leaving BuiltinKernelImpl<T,void>'s
+// vtable (eval_fxc_device/eval_vxc_fxc_device, declared in kernel_type.hpp)
+// unresolved at link time for every functional, provide a generic stub that
+// throws at runtime; ordinary exc/vxc evaluation is unaffected. The
+// underlying math (kernel_traits<T>::eval_fxc_*) already exists and is
+// shared with the host/CUDA/SYCL backends, so a real port -- mirroring
+// cuda/builtin.cu's device_eval_*_helper_* kernels -- remains possible as a
+// follow-up; that port must account for HIP-specific numerics differences
+// already present in this file (e.g. the fmax(rho,0.) clamps above) rather
+// than being a verbatim copy.
+template <typename KernelType>
+LDA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+LDA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar ) {
+  throw std::runtime_error("LDA Fxc device evaluation NYI for HIP backend");
+}
+
+template <typename KernelType>
+GGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+GGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar ) {
+  throw std::runtime_error("GGA Fxc device evaluation NYI for HIP backend");
+}
+
+template <typename KernelType>
+MGGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+template <typename KernelType>
+MGGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar ) {
+  throw std::runtime_error("MGGA Fxc device evaluation NYI for HIP backend");
+}
+
 #define LDA_GENERATE_DEVICE_HELPERS(KERN) \
   template LDA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_unpolar<KERN> ); \
   template LDA_EXC_VXC_GENERATOR_DEVICE( device_eval_exc_vxc_helper_unpolar<KERN> ); \
@@ -892,7 +1003,15 @@ MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar ) {
   template LDA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_polar<KERN> ); \
   template LDA_EXC_VXC_GENERATOR_DEVICE( device_eval_exc_vxc_helper_polar<KERN> ); \
   template LDA_EXC_INC_GENERATOR_DEVICE( device_eval_exc_inc_helper_polar<KERN> ); \
-  template LDA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); 
+  template LDA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); \
+  template LDA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar<KERN> ); \
+  template LDA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar<KERN> ); \
+  template LDA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar<KERN> ); \
+  template LDA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar<KERN> ); \
+  template LDA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar<KERN> ); \
+  template LDA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar<KERN> ); \
+  template LDA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar<KERN> ); \
+  template LDA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar<KERN> );
 
 #define GGA_GENERATE_DEVICE_HELPERS(KERN) \
   template GGA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_unpolar<KERN> ); \
@@ -902,7 +1021,15 @@ MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar ) {
   template GGA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_polar<KERN> ); \
   template GGA_EXC_VXC_GENERATOR_DEVICE( device_eval_exc_vxc_helper_polar<KERN> ); \
   template GGA_EXC_INC_GENERATOR_DEVICE( device_eval_exc_inc_helper_polar<KERN> ); \
-  template GGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); 
+  template GGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); \
+  template GGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar<KERN> ); \
+  template GGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar<KERN> ); \
+  template GGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar<KERN> ); \
+  template GGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar<KERN> ); \
+  template GGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar<KERN> ); \
+  template GGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar<KERN> ); \
+  template GGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar<KERN> ); \
+  template GGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar<KERN> );
 
 #define MGGA_GENERATE_DEVICE_HELPERS(KERN) \
   template MGGA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_unpolar<KERN> ); \
@@ -912,11 +1039,20 @@ MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar ) {
   template MGGA_EXC_GENERATOR_DEVICE( device_eval_exc_helper_polar<KERN> ); \
   template MGGA_EXC_VXC_GENERATOR_DEVICE( device_eval_exc_vxc_helper_polar<KERN> ); \
   template MGGA_EXC_INC_GENERATOR_DEVICE( device_eval_exc_inc_helper_polar<KERN> ); \
-  template MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); 
+  template MGGA_EXC_VXC_INC_GENERATOR_DEVICE( device_eval_exc_vxc_inc_helper_polar<KERN> ); \
+  template MGGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_unpolar<KERN> ); \
+  template MGGA_FXC_GENERATOR_DEVICE( device_eval_fxc_helper_polar<KERN> ); \
+  template MGGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_unpolar<KERN> ); \
+  template MGGA_VXC_FXC_GENERATOR_DEVICE( device_eval_vxc_fxc_helper_polar<KERN> ); \
+  template MGGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_unpolar<KERN> ); \
+  template MGGA_FXC_INC_GENERATOR_DEVICE( device_eval_fxc_inc_helper_polar<KERN> ); \
+  template MGGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_unpolar<KERN> ); \
+  template MGGA_VXC_FXC_INC_GENERATOR_DEVICE( device_eval_vxc_fxc_inc_helper_polar<KERN> );
 
 LDA_GENERATE_DEVICE_HELPERS( BuiltinSlaterExchange );
 LDA_GENERATE_DEVICE_HELPERS( BuiltinVWN3 );
 LDA_GENERATE_DEVICE_HELPERS( BuiltinVWN_RPA );
+LDA_GENERATE_DEVICE_HELPERS( BuiltinVWN );
 LDA_GENERATE_DEVICE_HELPERS( BuiltinPW91_LDA );
 LDA_GENERATE_DEVICE_HELPERS( BuiltinPW91_LDA_MOD );
 LDA_GENERATE_DEVICE_HELPERS( BuiltinPW91_LDA_RPA );
@@ -928,6 +1064,36 @@ GGA_GENERATE_DEVICE_HELPERS( BuiltinLYP   );
 GGA_GENERATE_DEVICE_HELPERS( BuiltinPBE_X );
 GGA_GENERATE_DEVICE_HELPERS( BuiltinRevPBE_X );
 GGA_GENERATE_DEVICE_HELPERS( BuiltinPBE_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinB97_D );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinITYH_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinITYH_X_033 );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinITYH_X_015 );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinP86_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinP86VWN_FT_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinPW91_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinPBE_SOL_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinBMK_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinN12_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinN12_SX_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinSOGGA11_X_C );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinPW91_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinMPW91_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinOPTX_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinRPBE_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinSOGGA11_X_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinPW86_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWB97_XC );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWB97X_XC );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWB97X_V_XC );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWB97X_D_XC );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWB97X_D3_XC );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinHJS_PBE_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinLCwPBE_wPBEh_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinLRCwPBE_HJS_PBE_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinLRCwPBEh_HJS_PBE_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinWPBEh_X_default0 );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinHSE03_wPBEh_X );
+GGA_GENERATE_DEVICE_HELPERS( BuiltinHSE06_wPBEh_X );
 
 
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinSCAN_X );
@@ -935,7 +1101,49 @@ MGGA_GENERATE_DEVICE_HELPERS( BuiltinSCAN_C );
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinR2SCAN_X );
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinR2SCAN_C );
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinFT98_X );
-
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM062X_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM062X_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinPKZB_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinPKZB_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinTPSS_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRevTPSS_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_L_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_HF_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRevM06_L_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_SX_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_L_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_HF_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRevM06_L_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM06_SX_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM05_2X_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM05_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM08_HX_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM08_SO_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinCF22D_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM11_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN12_L_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN12_SX_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN15_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN15_L_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinTPSS_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRevTPSS_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRSCAN_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinBC95_C );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMBEEF_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinRSCAN_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinBMK_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM08_HX_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM08_SO_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN12_L_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN15_L_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN15_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinCF22D_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinMN12_SX_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM11_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM05_X );
+MGGA_GENERATE_DEVICE_HELPERS( BuiltinM05_2X_X );
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinPC07_K );
 MGGA_GENERATE_DEVICE_HELPERS( BuiltinPC07OPT_K );
 
@@ -948,6 +1156,7 @@ LDA_GENERATE_DEVICE_HELPERS( BuiltinEPC17_1 )
 LDA_GENERATE_DEVICE_HELPERS( BuiltinEPC17_2 )
 LDA_GENERATE_DEVICE_HELPERS( BuiltinEPC18_1 )
 LDA_GENERATE_DEVICE_HELPERS( BuiltinEPC18_2 )
+
 
 }
 }
